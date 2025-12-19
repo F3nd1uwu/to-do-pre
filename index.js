@@ -1,4 +1,4 @@
-const initialItems = [
+const defaultItems = [
 	"Сделать проектную работу",
 	"Полить цветы",
 	"Пройти туториал по Реакту",
@@ -6,8 +6,6 @@ const initialItems = [
 	"Прогуляться по улице в солнечный день",
 	"Помыть посуду",
 ];
-
-let items = [...initialItems];
 
 const listElement = document.querySelector(".to-do__list");
 const formElement = document.querySelector(".to-do__form");
@@ -18,7 +16,7 @@ function loadTasks() {
 	if (savedTasks) {
 		return JSON.parse(savedTasks);
 	}
-	return [...initialItems];
+	return [...defaultItems];
 }
 
 function createItem(item) {
@@ -33,7 +31,7 @@ function createItem(item) {
 
 	deleteButton.addEventListener('click', () => {
 		clone.remove();
-		items = getTasksFromDOM();
+		const items = getTasksFromDOM();
 		saveTasks(items);
 	});
 
@@ -41,7 +39,7 @@ function createItem(item) {
 		const itemName = textElement.textContent;
 		const newItem = createItem(itemName);
 		listElement.prepend(newItem);
-		items = getTasksFromDOM();
+		const items = getTasksFromDOM();
 		saveTasks(items);
 	});
 
@@ -52,7 +50,7 @@ function createItem(item) {
 
 	textElement.addEventListener('blur', () => {
 		textElement.setAttribute('contenteditable', 'false');
-		items = getTasksFromDOM();
+		const items = getTasksFromDOM();
 		saveTasks(items);
 	});
 
@@ -72,8 +70,7 @@ function saveTasks(tasks) {
 	localStorage.setItem('tasks', JSON.stringify(tasks));
 }
 
-items = loadTasks();
-
+const items = loadTasks();
 items.forEach(item => {
 	const newItem = createItem(item);
 	listElement.append(newItem);
@@ -87,7 +84,7 @@ formElement.addEventListener('submit', (event) => {
 		const newItem = createItem(taskText);
 		listElement.prepend(newItem);
 		
-		items = getTasksFromDOM();
+		const items = getTasksFromDOM();
 		saveTasks(items);
 		
 		inputElement.value = '';
